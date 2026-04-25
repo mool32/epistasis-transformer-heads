@@ -468,12 +468,10 @@ best_shape = min(aics, key=aics.get)"""))
 
 
 cells.append(code(r"""# 5.5b Louvain modularity on epistasis network (|z|>3 pairs)
+# Use networkx.community.louvain_communities (NetworkX ≥3.0 builtin).
+# Avoids the python-louvain / community PyPI naming conflict.
 import networkx as nx
-try:
-    import community as community_louvain  # python-louvain
-except ImportError:
-    !pip install -q python-louvain
-    import community as community_louvain
+import networkx.algorithms.community as nx_comm
 
 G = nx.Graph()
 for h in TOP_HEADS:
@@ -484,9 +482,9 @@ for _, r in T1[T1['z_score'].abs() > 3].iterrows():
     G.add_edge(a, b, weight=abs(r.epsilon))
 
 if G.number_of_edges() > 0:
-    parts = community_louvain.best_partition(G, random_state=SEED)
-    Q = community_louvain.modularity(parts, G)
-    n_communities = len(set(parts.values()))
+    communities = nx_comm.louvain_communities(G, seed=SEED, weight='weight')
+    Q = nx_comm.modularity(G, communities, weight='weight')
+    n_communities = len(communities)
     print(f'epistasis graph: V={G.number_of_nodes()}, E={G.number_of_edges()}')
     print(f'Louvain communities: {n_communities}, Q = {Q:.3f}')
 else:
