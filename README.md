@@ -57,8 +57,25 @@ figures/     final figures
 
 ## Setup (Colab Pro+)
 
+The notebook clones this repo on every Colab session, so iteration loop is:
+
+```bash
+# locally
+git add -A && git commit -m "..." && git push
+```
 ```python
-!pip install -r requirements.txt
+# in Colab — first cell already does this for you
+!git -C /content/epistasis-transformer-heads pull --ff-only
 ```
 
-Project is expected at `/content/drive/MyDrive/Epistasis` on Colab.
+**Drive layout expected:**
+- `MyDrive/DFE research/data/colab_main_pilot/all_ablations.csv` — Paper 2
+  ground-truth witness CSV (read-only).
+- `MyDrive/Epistasis_results/` — output destination (eval sample cache,
+  analysis CSVs, report JSON). Created automatically.
+
+The repo itself is NOT mirrored to Drive — the source of truth is GitHub.
+
+## Repo
+
+[`mool32/epistasis-transformer-heads`](https://github.com/mool32/epistasis-transformer-heads)

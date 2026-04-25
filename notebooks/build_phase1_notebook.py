@@ -54,19 +54,46 @@ in Phase 2.
 """))
 
 
-cells.append(md("""## 1. Mount Drive and configure paths"""))
+cells.append(md("""## 1. Clone repo and mount Drive for ground-truth CSV
 
-cells.append(code(r"""from google.colab import drive
+Source code lives in GitHub: pull on every Colab session keeps the notebook
+in sync with the latest `main`. Paper 2's `all_ablations.csv` (the witness
+ground truth) is too large for git; it lives on Drive and we mount Drive
+read-only just for that file.
+"""))
+
+cells.append(code(r"""# 1a. Clone (or pull) the project repo into the Colab session.
+import os, subprocess
+REPO_URL  = 'https://github.com/mool32/epistasis-transformer-heads.git'
+PROJECT_ROOT = '/content/epistasis-transformer-heads'
+
+if not os.path.isdir(PROJECT_ROOT):
+    subprocess.check_call(['git', 'clone', '--depth=1', REPO_URL, PROJECT_ROOT])
+else:
+    subprocess.check_call(['git', '-C', PROJECT_ROOT, 'pull', '--ff-only'])
+commit = subprocess.check_output(['git', '-C', PROJECT_ROOT,
+                                  'rev-parse', '--short', 'HEAD']).decode().strip()
+print(f'Repo at {PROJECT_ROOT} @ {commit}')
+
+# 1b. Mount Drive (read-only is enough — we only need Paper 2 CSV from there).
+from google.colab import drive
 drive.mount('/content/drive', force_remount=False)
 
-import os, sys
-PROJECT_ROOT = '/content/drive/MyDrive/Epistasis'
-PAPER2_CSV   = '/content/drive/MyDrive/DFE research/data/colab_main_pilot/all_ablations.csv'
+PAPER2_CSV = '/content/drive/MyDrive/DFE research/data/colab_main_pilot/all_ablations.csv'
+assert os.path.isfile(PAPER2_CSV), (
+    f'Missing Paper 2 CSV at {PAPER2_CSV}.\n'
+    'Make sure DFE research/ folder is synced to your Drive root.'
+)
 
-assert os.path.isdir(PROJECT_ROOT), f'Missing Epistasis dir at {PROJECT_ROOT}'
-assert os.path.isfile(PAPER2_CSV), f'Missing Paper 2 CSV at {PAPER2_CSV}'
+# 1c. Make src importable, set up output dirs (mirroring repo layout, but
+# *outputs* land in Drive so they survive Colab disconnects).
+import sys
 sys.path.insert(0, PROJECT_ROOT)
-print('Project root:', PROJECT_ROOT)"""))
+
+OUTPUT_ROOT = '/content/drive/MyDrive/Epistasis_results'
+os.makedirs(os.path.join(OUTPUT_ROOT, 'data/eval_sample'), exist_ok=True)
+os.makedirs(os.path.join(OUTPUT_ROOT, 'data/analysis'),    exist_ok=True)
+print(f'Outputs → {OUTPUT_ROOT}')"""))
 
 
 cells.append(md("""## 2. Install dependencies (idempotent)"""))
@@ -130,7 +157,7 @@ in `main_pilot_colab.ipynb` cell 4. Streaming order is deterministic; the
 < 50-char filter is identical to ours.
 """))
 
-cells.append(code(r"""CACHE = os.path.join(PROJECT_ROOT, 'data/eval_sample/paper2_wt103train_25x4x2048.pt')
+cells.append(code(r"""CACHE = os.path.join(OUTPUT_ROOT, 'data/eval_sample/paper2_wt103train_25x4x2048.pt')
 batches, source = tokenize_eval_sample(
     tokenizer=tok,
     n_batches=25, batch_size=4, seq_len=2048,
@@ -257,7 +284,7 @@ if not PASS_PRIMITIVE:
     print(failing[['layer','head','paper2_delta_raw','ours_delta_raw',
                    'ours_delta_se','n_se']].to_string(index=False))
 
-cmp.to_csv(os.path.join(PROJECT_ROOT, 'data/analysis/phase1_witness.csv'),
+cmp.to_csv(os.path.join(OUTPUT_ROOT, 'data/analysis/phase1_witness.csv'),
            index=False)"""))
 
 
@@ -379,7 +406,7 @@ mvz"""))
 
 cells.append(code(r"""ZERO_OK = bool(mvz['agree'].all())
 print('Mean vs zero ablation:', 'AGREE' if ZERO_OK else 'DIVERGE — switch to mean ablation in Phase 2')
-mvz.to_csv(os.path.join(PROJECT_ROOT, 'data/analysis/phase1_mean_vs_zero.csv'),
+mvz.to_csv(os.path.join(OUTPUT_ROOT, 'data/analysis/phase1_mean_vs_zero.csv'),
            index=False)"""))
 
 
@@ -408,7 +435,7 @@ cells.append(code(r"""report = {
     'recommended_ablation_for_phase2':
         'zero' if ZERO_OK else 'mean',
 }
-out = os.path.join(PROJECT_ROOT, 'data/analysis/phase1_report.json')
+out = os.path.join(OUTPUT_ROOT, 'data/analysis/phase1_report.json')
 os.makedirs(os.path.dirname(out), exist_ok=True)
 with open(out, 'w') as f:
     json.dump(report, f, indent=2)
