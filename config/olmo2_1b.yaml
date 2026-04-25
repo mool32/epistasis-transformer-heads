@@ -1,0 +1,43 @@
+# OLMo-2 1B early-training — model B
+# Same checkpoint family used in Paper 2 Tier 2 OLMo replication.
+
+model:
+  name: "allenai/OLMo-2-0425-1B-early-training"
+  family: "llama_style"
+  n_layers: 16
+  n_heads: 16
+  hidden_size: 2048
+  head_dim: 128
+  # Revision is a stage1 branch like "stage1-step1000-tokens..." — must be
+  # resolved at runtime by listing repo refs and matching the step prefix.
+  # See notebooks/01_phase1_validation.ipynb for the resolver.
+  revision_template: "RESOLVE_STAGE1"
+
+# Checkpoints chosen to mirror Pythia training fractions (~0.7%, 1.5%, 6%, 11%).
+# Stage 1 of OLMo-2 1B ends near step 37000 (pre-anneal). We use 37000 as the
+# "final" checkpoint for cross-model comparison.
+checkpoints:
+  validation:    [37000]                            # Phase 1 (final)
+  primary:       [1000, 2000, 8000, 16000, 37000]   # Phase 2-3
+
+eval:
+  source: "pile"
+  n_batches: 64
+  batch_size: 8              # OLMo-2 1B is ~2.5× Pythia params, half batch
+  seq_len: 1024
+  precision: "float32_tf32"
+  cache_filename: "olmo2_1b_pile_1024x1024.pt"
+
+selection:
+  top_k: 30
+  tier2_random_pairs: 200
+  tier3_cross_pairs: 200
+
+bootstrap:
+  n_boot: 1000
+  seed: 42
+
+paths:
+  single_scan: "data/single_scans/olmo2_1b_step{step}.parquet"
+  pair_scan:   "data/pair_scans/olmo2_1b_step{step}.parquet"
+  per_batch:   "data/single_scans/olmo2_1b_step{step}_perbatch.npz"

@@ -1,0 +1,47 @@
+# Pythia 410M deduped — model A
+# All Paper 2 single-ablation data uses this exact config.
+
+model:
+  name: "EleutherAI/pythia-410m-deduped"
+  family: "gpt_neox"
+  n_layers: 24
+  n_heads: 16
+  hidden_size: 1024
+  head_dim: 64
+  # HF revision template — fill {step} with checkpoint number.
+  revision_template: "step{step}"
+
+# Checkpoints to scan in this project.
+# Aligned with Paper 2 grid for reuse of single-ablation ground truth.
+# Final checkpoint = 143000 (1.0 of training).
+checkpoints:
+  validation:    [143000]                       # Phase 1
+  primary:       [1000, 2000, 8000, 16000, 143000]   # Phase 2-3
+
+# Evaluation sample.
+# 1024 sequences × 1024 tokens ≈ 1M tokens (plan §3 default).
+# On Colab Pro+ (A100) one forward pass over this sample is ~60-120 s.
+eval:
+  source: "pile"             # falls back to wikitext-103 if Pile unreachable
+  n_batches: 64              # 64 × 16 × 1024 = 1,048,576 tokens
+  batch_size: 16             # A100-40GB friendly for Pythia 410M fp32+TF32
+  seq_len: 1024
+  precision: "float32_tf32"  # fp32 storage, TF32 matmul
+  cache_filename: "pythia_410m_pile_1024x1024.pt"
+
+# Pair selection (plan §4.3).
+selection:
+  top_k: 30                  # Tier 1 — full pairwise scan over top-K
+  tier2_random_pairs: 200    # Tier 2 — null distribution
+  tier3_cross_pairs: 200     # Tier 3 — top-K × random cross-tier
+
+# Bootstrap and noise.
+bootstrap:
+  n_boot: 1000
+  seed: 42
+
+# Output paths (relative to project root; Colab notebook overrides for Drive).
+paths:
+  single_scan: "data/single_scans/pythia_410m_step{step}.parquet"
+  pair_scan:   "data/pair_scans/pythia_410m_step{step}.parquet"
+  per_batch:   "data/single_scans/pythia_410m_step{step}_perbatch.npz"

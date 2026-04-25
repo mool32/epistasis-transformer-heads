@@ -1,0 +1,20 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store
+
+# Large artifacts — store on Drive, not in git
+data/eval_sample/*.pt
+data/single_scans/*.parquet
+data/single_scans/*.npz
+data/pair_scans/*.parquet
+data/pair_scans/*.npz
+figures/*.png
+figures/*.pdf
+
+# But keep directory shape
+!data/eval_sample/.gitkeep
+!data/single_scans/.gitkeep
+!data/pair_scans/.gitkeep
+!data/analysis/.gitkeep
+!figures/.gitkeep
