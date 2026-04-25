@@ -69,12 +69,12 @@ git add -A && git commit -m "..." && git push
 ```
 
 **Drive layout expected:**
-- `MyDrive/DFE research/data/colab_main_pilot/all_ablations.csv` — Paper 2
-  ground-truth witness CSV (read-only).
 - `MyDrive/Epistasis_results/` — output destination (eval sample cache,
   analysis CSVs, report JSON). Created automatically.
 
-The repo itself is NOT mirrored to Drive — the source of truth is GitHub.
+Paper 2's frozen witness CSV (`data/paper2/all_ablations.csv`, 174K) ships
+with the repo so inputs need no Drive setup. The repo itself is NOT mirrored
+to Drive — the source of truth is GitHub.
 
 ## Repo
 

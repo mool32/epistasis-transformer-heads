@@ -54,12 +54,11 @@ in Phase 2.
 """))
 
 
-cells.append(md("""## 1. Clone repo and mount Drive for ground-truth CSV
+cells.append(md("""## 1. Clone repo, mount Drive for outputs
 
-Source code lives in GitHub: pull on every Colab session keeps the notebook
-in sync with the latest `main`. Paper 2's `all_ablations.csv` (the witness
-ground truth) is too large for git; it lives on Drive and we mount Drive
-read-only just for that file.
+Source code + Paper 2 witness CSV (174K, frozen ground truth) live in
+GitHub. Drive is mounted only for *outputs* — the eval sample cache,
+analysis CSVs, and the report JSON — so they survive Colab disconnects.
 """))
 
 cells.append(code(r"""# 1a. Clone (or pull) the project repo into the Colab session.
@@ -75,18 +74,14 @@ commit = subprocess.check_output(['git', '-C', PROJECT_ROOT,
                                   'rev-parse', '--short', 'HEAD']).decode().strip()
 print(f'Repo at {PROJECT_ROOT} @ {commit}')
 
-# 1b. Mount Drive (read-only is enough — we only need Paper 2 CSV from there).
+# 1b. Witness CSV ships with the repo — no Drive dependency for inputs.
+PAPER2_CSV = os.path.join(PROJECT_ROOT, 'data/paper2/all_ablations.csv')
+assert os.path.isfile(PAPER2_CSV), f'Witness CSV missing at {PAPER2_CSV}'
+
+# 1c. Mount Drive for OUTPUTS only.
 from google.colab import drive
 drive.mount('/content/drive', force_remount=False)
 
-PAPER2_CSV = '/content/drive/MyDrive/DFE research/data/colab_main_pilot/all_ablations.csv'
-assert os.path.isfile(PAPER2_CSV), (
-    f'Missing Paper 2 CSV at {PAPER2_CSV}.\n'
-    'Make sure DFE research/ folder is synced to your Drive root.'
-)
-
-# 1c. Make src importable, set up output dirs (mirroring repo layout, but
-# *outputs* land in Drive so they survive Colab disconnects).
 import sys
 sys.path.insert(0, PROJECT_ROOT)
 
