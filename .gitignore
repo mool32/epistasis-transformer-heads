@@ -24,3 +24,4 @@ figures/*.pdf
 !data/analysis/**/*.json
 !data/analysis/**/*.md
 !data/analysis/**/*.png
+!data/analysis/**/*.parquet
