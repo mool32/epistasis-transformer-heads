@@ -1,0 +1,32 @@
+{
+  "phase": "Phase 1 \u2014 primitive validation",
+  "model": "EleutherAI/pythia-410m-deduped",
+  "checkpoint": 143000,
+  "eval_sample": {
+    "source": "wikitext",
+    "split": "train",
+    "shape": [
+      25,
+      4,
+      2048
+    ]
+  },
+  "baseline_mean": 2.8918202781677245,
+  "baseline_sem": 0.027221917212350934,
+  "baseline_drift_vs_paper2": 2.8610229740877458e-08,
+  "witness_n": 6,
+  "witness_pass": 6,
+  "witness_max_n_se": 0.0005138610597938702,
+  "witness_threshold_se": 2.0,
+  "primitive_pass": true,
+  "sha256_roundtrip_layers": [
+    5,
+    23
+  ],
+  "self_pair_guard": true,
+  "pair_commutativity": true,
+  "pair_self_idempotency_diff": 0.0,
+  "mean_vs_zero_ablation_agree": false,
+  "mean_vs_zero_threshold_se": 3.0,
+  "recommended_ablation_for_phase2": "mean"
+}

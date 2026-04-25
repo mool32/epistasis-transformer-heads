@@ -18,3 +18,8 @@ figures/*.pdf
 !data/pair_scans/.gitkeep
 !data/analysis/.gitkeep
 !figures/.gitkeep
+
+# Phase reports / verdict JSONs / witness CSVs are part of the record.
+!data/analysis/**/*.csv
+!data/analysis/**/*.json
+!data/analysis/**/*.md

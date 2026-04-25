@@ -17,7 +17,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from src.ablation import (
     ModelArch, ablate_head, restore_head, head_ablated, pair_ablated,
-    head_mean_ablated, tensor_hash,
+    head_mean_ablated, pair_mean_ablated, tensor_hash,
 )
 
 
@@ -164,6 +164,48 @@ def test_mean_ablation_replaces_slice_in_forward(stub_model_and_arch):
     # Run without the hook — output must differ (sanity)
     plain_out = proj(x)
     assert not torch.allclose(plain_out, expected_out)
+
+
+def test_pair_mean_ablation_independent_means(stub_model_and_arch):
+    """
+    pair_mean_ablated must overwrite both heads' slices to their respective
+    means, leaving other slices untouched, and restore weights bitwise on
+    exit. Means are passed in as constants (= "computed once on the
+    unmodified baseline"), independent of each other.
+    """
+    m, arch = stub_model_and_arch
+    L, Ha, Hb = 0, 0, 2
+    proj = arch.output_proj(m, L)
+
+    torch.manual_seed(11)
+    x = torch.randn(2, 5, arch.hidden_size)
+    mean_a = torch.full((arch.head_dim,), 1.0)
+    mean_b = torch.full((arch.head_dim,), 2.0)
+
+    sa, ea = Ha * arch.head_dim, (Ha + 1) * arch.head_dim
+    sb, eb = Hb * arch.head_dim, (Hb + 1) * arch.head_dim
+    x_expected = x.clone()
+    x_expected[..., sa:ea] = mean_a
+    x_expected[..., sb:eb] = mean_b
+    expected_out = proj(x_expected)
+
+    h0 = tensor_hash(proj.weight.data)
+    with pair_mean_ablated(m, arch, (L, Ha), (L, Hb), mean_a, mean_b):
+        actual_out = proj(x)
+        assert tensor_hash(proj.weight.data) == h0, "weights touched!"
+    assert tensor_hash(proj.weight.data) == h0
+    assert torch.allclose(actual_out, expected_out)
+    # Hooks fully removed
+    assert len(proj._forward_pre_hooks) == 0
+
+
+def test_pair_mean_self_raises(stub_model_and_arch):
+    m, arch = stub_model_and_arch
+    A = (1, 1)
+    mv = torch.zeros(arch.head_dim)
+    with pytest.raises(ValueError):
+        with pair_mean_ablated(m, arch, A, A, mv, mv):
+            pass
 
 
 def test_pair_same_layer_disjoint_slices(stub_model_and_arch):

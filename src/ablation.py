@@ -234,3 +234,57 @@ def head_mean_ablated(model, arch: ModelArch, layer: int, head: int,
         yield
     finally:
         h.remove()
+
+
+@contextmanager
+def pair_mean_ablated(model, arch: ModelArch,
+                      a: tuple[int, int], b: tuple[int, int],
+                      mean_a: torch.Tensor, mean_b: torch.Tensor,
+                      allow_self: bool = False):
+    """
+    Context manager: simultaneously mean-ablate two heads, restore on exit.
+
+    **Independent means.** `mean_a` and `mean_b` must each have been computed
+    on the *unmodified* baseline model (E[head | both intact]), not on a
+    model with the other head already ablated. This is the analogue of the
+    biological "double knockout uses single-mutant baselines, not
+    sequential" convention. Joint means E[head_a | head_b ablated] couple
+    the ablation effect with conditional distribution shift through the
+    residual stream — a second-order effect we deliberately exclude.
+
+    Implementation: two forward-pre-hooks, on a's and b's output projections.
+    For same-layer pairs both hooks attach to the same `o_proj` and are
+    composed in registration order — slices are disjoint by construction
+    (different head indices), so order is immaterial for the produced
+    output, only for restoration.
+    """
+    if a == b and not allow_self:
+        raise ValueError(f"Self-pair mean-ablation is undefined: a == b == {a}")
+
+    proj_a = arch.output_proj(model, a[0])
+    proj_b = arch.output_proj(model, b[0])
+    sa, ea = a[1] * arch.head_dim, (a[1] + 1) * arch.head_dim
+    sb, eb = b[1] * arch.head_dim, (b[1] + 1) * arch.head_dim
+
+    if mean_a.shape != (arch.head_dim,) or mean_b.shape != (arch.head_dim,):
+        raise ValueError(
+            f"mean shapes must be ({arch.head_dim},), "
+            f"got {tuple(mean_a.shape)}, {tuple(mean_b.shape)}"
+        )
+
+    def _make_hook(start: int, end: int, mean: torch.Tensor):
+        def hook(_module, inputs):
+            x = inputs[0]
+            x_new = x.clone()
+            x_new[..., start:end] = mean.to(x.dtype)
+            return (x_new,) + inputs[1:]
+        return hook
+
+    h_a = proj_a.register_forward_pre_hook(_make_hook(sa, ea, mean_a))
+    h_b = proj_b.register_forward_pre_hook(_make_hook(sb, eb, mean_b))
+    try:
+        yield
+    finally:
+        # LIFO removal
+        h_b.remove()
+        h_a.remove()
