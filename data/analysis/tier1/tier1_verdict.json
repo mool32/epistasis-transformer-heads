@@ -1,0 +1,182 @@
+{
+  "pre_registration_tag": "tier1_prereg_v1_locked",
+  "pre_reg_commit": "unknown",
+  "run_commit": "c066585",
+  "model": "EleutherAI/pythia-410m-deduped",
+  "checkpoint": 143000,
+  "eval_source": "wikitext-103",
+  "eval_shape": [
+    64,
+    16,
+    1024
+  ],
+  "eval_hash": "c83487a9283cc1fc",
+  "top_k": 30,
+  "n_pairs_T1": 435,
+  "top_heads": [
+    [
+      4,
+      6
+    ],
+    [
+      5,
+      2
+    ],
+    [
+      8,
+      9
+    ],
+    [
+      1,
+      10
+    ],
+    [
+      17,
+      1
+    ],
+    [
+      0,
+      9
+    ],
+    [
+      17,
+      4
+    ],
+    [
+      1,
+      6
+    ],
+    [
+      10,
+      11
+    ],
+    [
+      10,
+      8
+    ],
+    [
+      10,
+      1
+    ],
+    [
+      13,
+      14
+    ],
+    [
+      7,
+      2
+    ],
+    [
+      17,
+      13
+    ],
+    [
+      16,
+      15
+    ],
+    [
+      4,
+      9
+    ],
+    [
+      4,
+      8
+    ],
+    [
+      15,
+      10
+    ],
+    [
+      17,
+      11
+    ],
+    [
+      15,
+      13
+    ],
+    [
+      13,
+      6
+    ],
+    [
+      1,
+      11
+    ],
+    [
+      3,
+      0
+    ],
+    [
+      10,
+      10
+    ],
+    [
+      9,
+      8
+    ],
+    [
+      7,
+      0
+    ],
+    [
+      12,
+      2
+    ],
+    [
+      12,
+      11
+    ],
+    [
+      3,
+      7
+    ],
+    [
+      11,
+      10
+    ]
+  ],
+  "pinned_T2_baseline": 2.88e-05,
+  "median_abs_eps_T1": 0.0010313056409358978,
+  "median_abs_eps_T2": 2.8751790523529053e-05,
+  "ratio": 35.80922364360757,
+  "permutation_p": 0.0,
+  "null_ratio_95_CI": [
+    0.5003242921492965,
+    1.8271140794223795
+  ],
+  "methodology_gate": "CAUTION",
+  "primary_verdict_tier": "PASS",
+  "thresholds": {
+    "PASS": 5.0,
+    "PARTIAL": 2.0,
+    "WEAK": 1.5
+  },
+  "ks_D": 0.5135632183908045,
+  "ks_p": 1.941548337226971e-11,
+  "same_layer_test": {
+    "n_same": 23,
+    "n_cross": 412,
+    "median_same": 0.004516184329986572,
+    "median_cross": 0.0009961426258087158,
+    "mannwhitney_U": 6410.0,
+    "mannwhitney_p_one_sided": 0.00219516069631232,
+    "powered": true
+  },
+  "sign_asymmetry": {
+    "n_significant_z_gt_3": 385,
+    "frac_negative": 0.21558441558441557,
+    "outcome": "reversed_compensatory_dominant"
+  },
+  "aic_shape": {
+    "gaussian": 3900.5347220541876,
+    "laplace": 3846.1452688032323,
+    "student_t": 3837.9980653149128
+  },
+  "best_shape_aic": "student_t",
+  "network": {
+    "n_nodes": 30,
+    "n_edges_z_gt_3": 385,
+    "modularity_Q": 0.2540133217069851,
+    "n_communities": 4
+  }
+}
