@@ -48,18 +48,24 @@ def tokenize_eval_sample(tokenizer, n_batches: int, batch_size: int,
     from datasets import load_dataset
 
     actual_source = source
+    actual_split = split
     if source == "pile":
         try:
             ds = load_dataset("monology/pile-uncopyrighted",
                               split=split, streaming=True)
-        except Exception:
-            print("[eval] Pile unreachable, falling back to wikitext-103")
+        except Exception as e:
+            # Wikitext validation has only ~245K tokens — insufficient for the
+            # 1M+ samples this project needs. Force train split on fallback.
+            print(f"[eval] Pile unreachable ({type(e).__name__}); "
+                  f"falling back to wikitext-103 TRAIN.")
             ds = load_dataset("wikitext", "wikitext-103-raw-v1",
-                              split=split, streaming=True)
-            actual_source = "wikitext"
+                              split="train", streaming=True)
+            actual_source = "wikitext-103"
+            actual_split  = "train"
     elif source == "wikitext":
         ds = load_dataset("wikitext", "wikitext-103-raw-v1",
                           split=split, streaming=True)
+        actual_source = "wikitext-103"
     else:
         raise ValueError(f"Unknown source: {source}")
 
@@ -78,6 +84,13 @@ def tokenize_eval_sample(tokenizer, n_batches: int, batch_size: int,
         total += ids.numel()
         if total >= needed * 1.2:
             break
+
+    if total < needed:
+        raise RuntimeError(
+            f"Eval source exhausted before reaching {needed:,} tokens "
+            f"(got {total:,}). source={actual_source}, split={actual_split}. "
+            f"Try a larger split (e.g. wikitext-103 train) or reduce sample size."
+        )
 
     merged = torch.cat(chunks)[:needed]
     tokens = merged.reshape(n_batches, batch_size, seq_len).contiguous()

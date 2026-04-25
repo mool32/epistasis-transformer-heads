@@ -163,8 +163,11 @@ This is the production sample for **all** ε measurements. Cached to Drive
 on first run, reused thereafter — every checkpoint of every model sees the
 same tokens (cross-checkpoint comparability requirement)."""))
 
-cells.append(code(r"""CACHE = os.path.join(OUTPUT_ROOT,
-    f'data/eval_sample/pile_val_{N_BATCHES}x{BATCH_SIZE}x{SEQ_LEN}.pt')
+cells.append(code(r"""# Cache name is shape-keyed; actual source is stored inside the file as
+# metadata. Avoids misnaming when Pile is unreachable and we fall back to
+# wikitext-103 train.
+CACHE = os.path.join(OUTPUT_ROOT,
+    f'data/eval_sample/eval_{N_BATCHES}x{BATCH_SIZE}x{SEQ_LEN}.pt')
 batches, source = tokenize_eval_sample(
     tokenizer=tok,
     n_batches=N_BATCHES, batch_size=BATCH_SIZE, seq_len=SEQ_LEN,
@@ -172,8 +175,9 @@ batches, source = tokenize_eval_sample(
 )
 print(f'eval sample: {batches.shape} from {source}, total={batches.numel():,}')
 if source != 'pile':
-    print('WARNING: Pile unreachable, fell back to', source)
-    print('         Document this as a deviation in the verdict JSON.')"""))
+    print(f'\\nNOTE: Pile unreachable, using {source}.')
+    print(f'      Source recorded in verdict JSON. If Paper 2 head class')
+    print(f'      carry-over is desired, this is the closer source anyway.')"""))
 
 
 cells.append(md("""## 6. Baseline loss"""))
