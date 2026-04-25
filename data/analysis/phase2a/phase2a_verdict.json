@@ -1,0 +1,28 @@
+{
+  "phase": "Phase 2A \u2014 calibration on 50 random pairs",
+  "commit": "c81d7f0",
+  "model": "EleutherAI/pythia-410m-deduped",
+  "checkpoint": 143000,
+  "eval_source": "wikitext-103",
+  "eval_shape": [
+    64,
+    16,
+    1024
+  ],
+  "eval_tokens": 1048576,
+  "n_pairs": 50,
+  "n_unique_heads": 89,
+  "n_boot": 1000,
+  "ablation_type": "mean (independent)",
+  "median_abs_eps": 2.8751790523529053e-05,
+  "median_se_eps": 1.056491826601434e-05,
+  "R_ratio": 2.721439939201327,
+  "R_threshold": 2.0,
+  "frac_abs_z_gt_2": 0.7,
+  "frac_abs_z_gt_3": 0.54,
+  "frac_abs_z_gt_5": 0.38,
+  "mean_epsilon": 5.330383777618408e-05,
+  "sem_epsilon": 2.8582968108342832e-05,
+  "verdict": "PASS",
+  "next_step": "Proceed to Tier 1 pre-registration + scan."
+}
