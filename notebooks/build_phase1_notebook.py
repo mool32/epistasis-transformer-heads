@@ -194,7 +194,7 @@ for (L_TEST, H_TEST) in [(5, 9), (23, 15)]:
     assert h_before == h_after,    f'L{L_TEST}H{H_TEST}: restore did not match!'
     sha_results.append({'layer': L_TEST, 'head': H_TEST, 'roundtrip': True})
 
-print('\\nSHA-256 round-trip: PASS for both witness layers')"""))
+print('\nSHA-256 round-trip: PASS for both witness layers')"""))
 
 
 cells.append(md("""## 8. Reproduce Paper 2 ablations for a witness set
@@ -271,11 +271,11 @@ print(f'witness agreement: {n_pass}/{n_total} within {THRESHOLD_SE}·SE')
 print(f'worst case: n_se = {max_n_se:.2f}')
 
 PASS_PRIMITIVE = (n_pass == n_total)
-print('\\nPRIMITIVE VALIDATION:', 'PASS' if PASS_PRIMITIVE else 'FAIL — STOP and investigate')
+print('\nPRIMITIVE VALIDATION:', 'PASS' if PASS_PRIMITIVE else 'FAIL — STOP and investigate')
 
 if not PASS_PRIMITIVE:
     failing = cmp[~cmp['agree']]
-    print('\\nFailing heads:')
+    print('\nFailing heads:')
     print(failing[['layer','head','paper2_delta_raw','ours_delta_raw',
                    'ours_delta_se','n_se']].to_string(index=False))
 
@@ -435,10 +435,10 @@ os.makedirs(os.path.dirname(out), exist_ok=True)
 with open(out, 'w') as f:
     json.dump(report, f, indent=2)
 print(json.dumps(report, indent=2))
-print('\\nSaved:', out)
+print('\nSaved:', out)
 
 ALL_PASS = PASS_PRIMITIVE and ZERO_OK
-print('\\n' + '='*60)
+print('\n' + '='*60)
 print('PHASE 1', 'PASS — proceed to Phase 2 calibration' if ALL_PASS
       else 'FAIL — investigate before continuing')
 print('='*60)"""))

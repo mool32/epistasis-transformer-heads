@@ -162,8 +162,15 @@ HASH_RECORD = os.path.join(OUTPUT_ROOT, 'data/eval_sample/eval_hash.txt')
 assert os.path.exists(HASH_RECORD), 'Phase 2B has not recorded eval hash yet — run Phase 2B first.'
 with open(HASH_RECORD) as f:
     recorded = f.read().strip()
+# Legacy: an earlier build-script wrote the literal 2-char sequence '\n'
+# instead of a newline. Strip that suffix if present and rewrite cleanly.
+if recorded.endswith(r'\n'):
+    recorded = recorded[:-2]
+    with open(HASH_RECORD, 'w') as f:
+        f.write(recorded + '\n')
+    print('[fix] cleaned legacy backslash-n artefact from eval_hash.txt')
 assert recorded == EVAL_HASH, (
-    f'EVAL CACHE HASH MISMATCH! Recorded {recorded}, current {EVAL_HASH}. '
+    f'EVAL CACHE HASH MISMATCH! Recorded {recorded!r}, current {EVAL_HASH!r}. '
     f'Pre-registration violated. Abort.'
 )
 print('hash matches Phase 2B record — OK')"""))
@@ -312,7 +319,7 @@ for i, ((La, Ha), (Lb, Hb)) in enumerate(TIER1_PAIRS):
               f'(ETA {eta:.0f}m)')
 
 T1 = pd.read_parquet(TIER1_PARQUET)
-print(f'\\nTier 1 scan complete: {len(T1)}/{len(TIER1_PAIRS)} pairs')"""))
+print(f'\nTier 1 scan complete: {len(T1)}/{len(TIER1_PAIRS)} pairs')"""))
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -338,7 +345,7 @@ assert abs(median_T2 - T2_PIN) < 1e-7, (
 ratio = median_T1 / T2_PIN
 print(f'median(|ε|)_T1     = {median_T1:.5e}')
 print(f'median(|ε|)_T2_pin = {T2_PIN:.5e}  (Phase 2A, commit c81d7f0)')
-print(f'\\nratio              = {ratio:.3f}')
+print(f'\nratio              = {ratio:.3f}')
 
 # Permutation null
 pool = np.concatenate([abs_eps_T1, abs_eps_T2])
@@ -373,7 +380,7 @@ elif null_p975 > 1.5:
 else:
     gate = 'PASS'
 
-print(f'\\nTIER 1 PRIMARY VERDICT: {tier}')
+print(f'\nTIER 1 PRIMARY VERDICT: {tier}')
 print(f'methodology gate     : {gate}')"""))
 
 
@@ -540,7 +547,7 @@ out = os.path.join(TIER1_DIR, 'tier1_verdict.json')
 with open(out, 'w') as f:
     json.dump(verdict, f, indent=2)
 print(json.dumps(verdict, indent=2))
-print('\\nSaved →', out)"""))
+print('\nSaved →', out)"""))
 
 
 cells.append(md("""## 15. Headline plot"""))

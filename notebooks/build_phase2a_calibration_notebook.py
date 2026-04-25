@@ -175,7 +175,7 @@ batches, source = tokenize_eval_sample(
 )
 print(f'eval sample: {batches.shape} from {source}, total={batches.numel():,}')
 if source != 'pile':
-    print(f'\\nNOTE: Pile unreachable, using {source}.')
+    print(f'\nNOTE: Pile unreachable, using {source}.')
     print(f'      Source recorded in verdict JSON. If Paper 2 head class')
     print(f'      carry-over is desired, this is the closer source anyway.')"""))
 
@@ -323,7 +323,7 @@ for i, (L, H) in enumerate(todo):
     delta = float(report.per_batch.mean() - BASELINE_PERBATCH.mean())
     print(f'  [{i+1}/{len(todo)}] L{L}H{H}  Δ_mean = {delta:+.6f}  ({time.time()-t0:.0f}s)')
 
-print(f'\\nall {len(SINGLES)} singles done')"""))
+print(f'\nall {len(SINGLES)} singles done')"""))
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -436,7 +436,7 @@ print(f'fraction |z| > 5 = {frac_z5:.2%}')
 # Mean-of-means sanity (random pairs should give ε mean ≈ 0)
 mean_eps = float(PAIRS['epsilon'].mean())
 sem_eps  = float(PAIRS['epsilon'].std(ddof=1) / np.sqrt(len(PAIRS)))
-print(f'\\nrandom-pair ε mean = {mean_eps:+.5f} ± {sem_eps:.5f}  '
+print(f'\nrandom-pair ε mean = {mean_eps:+.5f} ± {sem_eps:.5f}  '
       f'(z={mean_eps/sem_eps:+.2f})')"""))
 
 
@@ -505,7 +505,7 @@ verdict_json = {
 out = os.path.join(PHASE2A_DIR, 'phase2a_verdict.json')
 with open(out, 'w') as f:
     json.dump(verdict_json, f, indent=2)
-print('\\nSaved verdict →', out)
+print('\nSaved verdict →', out)
 print(json.dumps(verdict_json, indent=2))"""))
 
 
@@ -559,7 +559,7 @@ from scipy.stats import spearmanr
 rho, pval = spearmanr(sanity['paper2_delta_raw_wt103'].abs(),
                       sanity['pile_delta_mean_ablation'].abs())
 print(sanity.to_string(index=False))
-print(f'\\nSpearman ρ on |Δ| (n=5): {rho:+.3f}  (p={pval:.3f})')
+print(f'\nSpearman ρ on |Δ| (n=5): {rho:+.3f}  (p={pval:.3f})')
 print('Note: n=5 is descriptive only; not a hypothesis test.')
 
 sanity.to_csv(os.path.join(PHASE2A_DIR, 'paper2_carryover_sanity.csv'), index=False)"""))

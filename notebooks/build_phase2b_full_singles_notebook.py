@@ -154,15 +154,15 @@ if os.path.exists(HASH_RECORD):
     with open(HASH_RECORD) as f:
         prev_hash = f.read().strip()
     assert prev_hash == EVAL_HASH, (
-        f'EVAL CACHE HASH MISMATCH!\\n'
-        f'Recorded: {prev_hash}\\n'
-        f'Current : {EVAL_HASH}\\n'
+        f'EVAL CACHE HASH MISMATCH!\n'
+        f'Recorded: {prev_hash}\n'
+        f'Current : {EVAL_HASH}\n'
         f'Pre-registration violated. Abort.'
     )
     print('hash matches recorded value — OK')
 else:
     with open(HASH_RECORD, 'w') as f:
-        f.write(EVAL_HASH + '\\n')
+        f.write(EVAL_HASH + '\n')
     print(f'hash recorded for first time → {HASH_RECORD}')"""))
 
 
@@ -309,7 +309,7 @@ for i, (L, H) in enumerate(todo):
               f'Δ={boot.delta:+.5f} ± {boot.se:.5f}  '
               f'({elapsed:.0f}s, ETA {eta_min:.0f}m)')
 
-print(f'\\nscan complete: {len(rows)}/{N_HEADS_TOTAL} heads')"""))
+print(f'\nscan complete: {len(rows)}/{N_HEADS_TOTAL} heads')"""))
 
 
 cells.append(md("""## 10. Top-30 preview + DFE summary"""))
@@ -322,7 +322,7 @@ print(top30.to_string(index=False))
 # Quick DFE summary
 n_pos = int((df['delta'] > 0).sum())
 n_neg = int((df['delta'] < 0).sum())
-print(f'\\nDFE summary across {len(df)} heads:')
+print(f'\nDFE summary across {len(df)} heads:')
 print(f'  positive (improves loss when ablated): {n_pos}')
 print(f'  negative (hurts loss when ablated)   : {n_neg}')
 print(f'  median |Δ|                          : {df.abs_delta.median():.5e}')
@@ -330,7 +330,7 @@ print(f'  max |Δ|                             : {df.abs_delta.max():.5e}')
 
 # Layer profile
 layer_max = df.groupby('layer')['abs_delta'].max().reset_index()
-print(f'\\nMax |Δ| per layer: {layer_max.values.tolist()}')"""))
+print(f'\nMax |Δ| per layer: {layer_max.values.tolist()}')"""))
 
 
 cells.append(md("""## 11. Save Phase 2B verdict"""))
@@ -359,7 +359,7 @@ out = os.path.join(PHASE2B_DIR, 'phase2b_verdict.json')
 with open(out, 'w') as f:
     json.dump(verdict, f, indent=2)
 print('saved', out)
-print(f'\\nDone. {len(df)}/{N_HEADS_TOTAL} heads measured.')
+print(f'\nDone. {len(df)}/{N_HEADS_TOTAL} heads measured.')
 print(f'Top-30 ready for Tier 1 selection.')"""))
 
 
