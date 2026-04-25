@@ -7,9 +7,10 @@ of approval. The draft file may evolve into v1.1/v2 in the future; *this*
 file does not. Any change to the substance of this file is a
 pre-registration violation.
 
-**Locked-on-commit:** see annotated tag `tier1_prereg_v1_locked` (the
-commit that introduced this file). The exact hash is recorded in the
-followup commit `lock: record tier1 pre-reg commit hash` and gets baked
+**Locked-on-commit:** `1681d0d` (annotated tag `tier1_prereg_v1_locked`).
+This file's substance was introduced at that commit; the only edit
+permitted afterwards is the insertion of this hash record. Any further
+modification is a pre-registration violation. The hash is also baked
 into every `tier1_verdict.json` produced downstream.
 
 **Eval-cache verifier:** `tensor_hash(eval_64x16x1024.pt)` is checked
