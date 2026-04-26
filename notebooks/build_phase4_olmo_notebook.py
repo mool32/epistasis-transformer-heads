@@ -105,9 +105,11 @@ upgrade requests, and the resulting partially-upgraded state lacks
 (Runtime → Restart runtime), then re-run from cell 1. The already-loaded
 `transformers` module in this Python process is cached; pip install
 alone cannot replace it."""))
-cells.append(code(r"""!pip install --upgrade --force-reinstall -q \
-                    'transformers>=4.50,<5' datasets==3.0.1 pyarrow==16.1.0 \
-                    pyyaml==6.0.2 accelerate==1.1.0 huggingface_hub scipy 2>&1 | tail -3"""))
+cells.append(code(r"""# Upgrade ONLY transformers (and accelerate which goes with it).
+# --force-reinstall is dangerous on Colab — it pulls fresh scipy/sklearn
+# that may require newer numpy than Colab's pre-installed wheel.
+# Keep other dependencies as Colab provides them.
+!pip install -q --upgrade 'transformers>=4.50,<5' 'accelerate>=1.0' 2>&1 | tail -5"""))
 
 
 cells.append(md("""## 2b. Verify olmo2 is actually available
