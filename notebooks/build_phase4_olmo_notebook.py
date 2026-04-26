@@ -93,17 +93,40 @@ os.makedirs(PHASE4_DIR, exist_ok=True)
 print(f'Outputs → {PHASE4_DIR}')"""))
 
 
-cells.append(md("""## 2. Install — OLMo-2 needs `transformers >= 4.47`
+cells.append(md("""## 2a. Install — `transformers >= 4.50` for OLMo-2 support
 
-Pythia notebooks (Phase 1/2/3, Tier 1) are pinned to `transformers==4.45.2`
-for byte-identical reproducibility against Tier 1 baseline. OLMo-2's
-`olmo2` model class was added in `transformers 4.47`, so we bump only
-this Phase 4 environment. Cross-checkpoint comparison within OLMo is
-internally consistent (this notebook is one-shot)."""))
-cells.append(code(r"""!pip install -q 'transformers>=4.48,<5' datasets==3.0.1 pyarrow==16.1.0 \
-                    pyyaml==6.0.2 accelerate==0.34.2 huggingface_hub scipy 2>&1 | tail -3
-import transformers
-print(f'transformers {transformers.__version__}')"""))
+Pythia notebooks pin `transformers==4.45.2` for byte-identical reproducibility
+against the Tier 1 baseline. OLMo-2 needs newer transformers. We
+**force-reinstall** because Colab's pre-installed transformers can shadow
+upgrade requests, and the resulting partially-upgraded state lacks
+`olmo2` from `CONFIG_MAPPING_NAMES`.
+
+⚠️ **After this cell completes, you MUST restart the Colab runtime**
+(Runtime → Restart runtime), then re-run from cell 1. The already-loaded
+`transformers` module in this Python process is cached; pip install
+alone cannot replace it."""))
+cells.append(code(r"""!pip install --upgrade --force-reinstall -q \
+                    'transformers>=4.50,<5' datasets==3.0.1 pyarrow==16.1.0 \
+                    pyyaml==6.0.2 accelerate==1.1.0 huggingface_hub scipy 2>&1 | tail -3"""))
+
+
+cells.append(md("""## 2b. Verify olmo2 is actually available
+
+If this assertion fires, restart the runtime — the pip install above
+upgraded the on-disk wheel, but Python is still holding the old module
+in memory."""))
+
+cells.append(code(r"""import transformers
+from transformers.models.auto.configuration_auto import CONFIG_MAPPING_NAMES
+
+print(f'transformers: {transformers.__version__}')
+olmo_keys = sorted(k for k in CONFIG_MAPPING_NAMES.keys() if 'olmo' in k.lower())
+print(f'olmo* keys in CONFIG_MAPPING: {olmo_keys}')
+assert 'olmo2' in CONFIG_MAPPING_NAMES, (
+    f'olmo2 still missing — RESTART RUNTIME (Runtime → Restart runtime), '
+    f'then re-run from cell 1. Current transformers: {transformers.__version__}'
+)
+print('OK — olmo2 supported')"""))
 
 
 cells.append(md("""## 3. Imports + locked config"""))
@@ -172,8 +195,12 @@ print(f'\\nSelected: step{TARGET_STEP}  →  {REVISION}')"""))
 cells.append(md("""## 5. Load OLMo-2 1B + detect arch"""))
 cells.append(code(r"""t0 = time.time()
 tok = AutoTokenizer.from_pretrained(MODEL_NAME, revision=REVISION)
+# trust_remote_code lets us fall back to repo-bundled modeling code if the
+# transformers olmo2 implementation has any drift from this checkpoint's
+# expected interface. Safe — modeling code is part of the locked revision.
 model = AutoModelForCausalLM.from_pretrained(
-    MODEL_NAME, revision=REVISION, torch_dtype=torch.float32
+    MODEL_NAME, revision=REVISION, torch_dtype=torch.float32,
+    trust_remote_code=True,
 ).to(device).eval()
 print(f'loaded in {time.time()-t0:.0f}s')
 
