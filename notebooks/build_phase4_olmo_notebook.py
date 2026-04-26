@@ -81,7 +81,10 @@ assert PRE_REG_COMMIT != 'MISSING', 'Pre-reg v3 tag not found — abort'
 print(f'Repo @ {COMMIT}, pre-reg v3 locked @ {PRE_REG_COMMIT}')
 
 from google.colab import drive
-drive.mount('/content/drive', force_remount=False)
+# force_remount=True: more robust against stale state from parallel
+# Colab sessions or aborted auth popups. The remount itself is fast
+# if Drive was already mounted; the cost is only an extra round-trip.
+drive.mount('/content/drive', force_remount=True)
 
 import sys
 sys.path.insert(0, PROJECT_ROOT)
