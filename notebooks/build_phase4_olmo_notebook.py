@@ -123,7 +123,8 @@ RATIO_THRESHOLDS = {'PASS': 5.0, 'PARTIAL': 2.0, 'WEAK': 1.5}
 PERMUTATION_SEED = 20260426
 
 MODEL_NAME = 'allenai/OLMo-2-0425-1B-early-training'
-TARGET_STEP = 37000   # end of stage1 = "final" for replication
+# TARGET_STEP auto-discovered in section 4 (highest available stage1 step).
+TARGET_STEP = None
 
 seed_everything(SEED)
 enable_tf32_float32()
@@ -131,13 +132,33 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print(f'device={device}')"""))
 
 
-cells.append(md("""## 4. Resolve OLMo revision (stage1-step37000-...)"""))
-cells.append(code(r"""refs = list_repo_refs(MODEL_NAME)
+cells.append(md("""## 4. Resolve OLMo revision — auto-discover latest stage1 step
+
+We don't hard-code TARGET_STEP because the early-training repo's available
+checkpoints can vary. We list all `stage1-stepN-...` branches, pick the
+highest N, and use that as the "final-of-stage1" reference. Print all
+candidates first so the user can confirm."""))
+cells.append(code(r"""import re
+refs = list_repo_refs(MODEL_NAME)
 all_branches = [b.name for b in refs.branches]
-matches = [b for b in all_branches if b.startswith(f'stage1-step{TARGET_STEP}-')]
-assert len(matches) >= 1, f'No revision matches stage1-step{TARGET_STEP}- in {MODEL_NAME}'
-REVISION = matches[0]
-print(f'OLMo revision: {REVISION}')"""))
+stage1 = []
+for b in all_branches:
+    m = re.match(r'^stage1-step(\d+)-', b)
+    if m:
+        stage1.append((int(m.group(1)), b))
+stage1.sort()
+assert stage1, f'No stage1-stepN- revisions found in {MODEL_NAME}'
+
+print(f'Available stage1 checkpoints ({len(stage1)} total):')
+for s, b in stage1[:5]:
+    print(f'  step{s:>6}  →  {b}')
+if len(stage1) > 5:
+    print('  ...')
+    for s, b in stage1[-5:]:
+        print(f'  step{s:>6}  →  {b}')
+
+TARGET_STEP, REVISION = stage1[-1]
+print(f'\\nSelected: step{TARGET_STEP}  →  {REVISION}')"""))
 
 
 cells.append(md("""## 5. Load OLMo-2 1B + detect arch"""))
