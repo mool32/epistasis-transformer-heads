@@ -53,15 +53,17 @@ This pre-registration tests H1 vs H2 directly.
 ## 1. Model + checkpoints
 
 - **Model:** `EleutherAI/pythia-410m-deduped` (same as v1).
-- **Checkpoints (5 total).** Aligned with Paper 2 + plan §3 grid:
+- **Checkpoints (6 total).** Aligned with Paper 2 + plan §3 grid, with
+  step 4000 added for finer resolution near the predicted window edge:
 
-| step   | training fraction | rationale                                      |
-|--------|-------------------|------------------------------------------------|
-| 1000   | 0.7 %             | pre-crystallization endpoint (Paper 2)         |
-| 2000   | 1.4 %             | peak DFE crystallization (Paper 2)             |
-| 8000   | 5.6 %             | mid post-crystallization                        |
-| 16000  | 11.2 %            | mature regime begins                            |
-| 143000 | 100 %             | already done in Tier 1 (commit `019d520`)      |
+| step   | training fraction | rationale                                       |
+|--------|-------------------|--------------------------------------------------|
+| 1000   | 0.7 %             | pre-crystallization endpoint (Paper 2)           |
+| 2000   | 1.4 %             | peak DFE crystallization (Paper 2)               |
+| 4000   | 2.8 %             | post-crystallization onset; PASS-window edge     |
+| 8000   | 5.6 %             | mid post-crystallization                         |
+| 16000  | 11.2 %            | mature regime begins                             |
+| 143000 | 100 %             | already done in Tier 1 (commit `019d520`)       |
 
 - **One-shot:** this pre-reg covers the trajectory ONLY. OLMo-2 1B
   cross-model is pre-reg v3, separate.
@@ -102,29 +104,36 @@ where
 Both numerator and denominator measured at the SAME step
 (contemporaneous comparison, not pinned-to-final).
 
-**Prediction (H1 / co-emergence).** transition_step is in **[1000, 4000]**,
-i.e., between the pre-crystallization checkpoint and ~2.8 % training.
+**Prediction (H1 / co-emergence).** transition_step ∈ **[1000, 2000]**,
+strictly within the Paper 2 DFE-crystallization window (0.7–1.5 %
+training). This is a hard test of H1 — looser pre-reg windows would
+inflate PASS via mechanical overlap with the typical post-pre-train
+"things happen" zone.
 
-**Four-tier decision.**
-- **PASS** (H1 strongly supported):
-  `1000 ≤ transition_step ≤ 4000`
-- **PARTIAL** (delayed but in expected regime):
-  `4000 < transition_step ≤ 16000`
-- **WEAK** (very late emergence; H2 over H1):
-  `16000 < transition_step ≤ 64000`
-- **FAIL_NEVER**: ratio never crosses 5 at any tested checkpoint.
-- **FAIL_PRESENT_AT_ZERO**: ratio > 5 already at step 1000 (the test
-  starts inside the predicted window — we cannot confirm transition).
-  Resolved by adding a step-512 measurement to localize the transition;
-  this addition is *triggered* by the FAIL_PRESENT_AT_ZERO outcome but
-  pre-registered as a contingent extension.
+**Five-tier decision.**
+- **PASS** (H1 strongly supported, transition co-localizes with DFE):
+  `transition_step ∈ {1000, 2000}`
+- **PARTIAL** (delayed but in early regime):
+  `transition_step ∈ {4000, 8000}`
+- **WEAK** (late, strongly disfavours H1):
+  `transition_step = 16000`
+- **FAIL_NEVER**: ratio never crosses 5 between step 1000 and 16000.
+  Definitionally impossible given Tier 1 PASS at step 143000 (we can
+  always extend the grid to localize), but the label is reserved for
+  audit completeness.
+- **FAIL_PRESENT_AT_ZERO**: ratio > 5 already at step 1000.
+  *Contingent extension* (pre-registered, not post-hoc): rerun the
+  primary on step 1, step 16, step 128, step 512 to localize the
+  transition. The earliest of these at which ratio > 5 becomes the
+  effective transition_step. Tier mapping for the extension is locked
+  identically: PASS = 1–512, PARTIAL = 1–8000 outside, WEAK = > 8000.
 
-The thresholds 1000/4000/16000/64000 are locked. They map to training
-fractions 0.7 %, 2.8 %, 11.2 %, 44.8 % — DFE crystallization endpoint,
-end of "early window", mature regime, late mature. The PASS window
-extends slightly past the 1.5 % Paper 2 peak to allow for natural
-asymmetry between DFE shape transition and pairwise structure
-formation.
+The pre-registered prediction is **PASS**. Any other outcome is content
+in itself: PARTIAL means epistasis lags DFE by the post-crystallization
+window; WEAK means epistasis lives on a fundamentally different
+timescale; FAIL_PRESENT_AT_ZERO means architectural epistasis itself
+emerges at step 0 (lottery-ticket style) and the "functional excess"
+is already present in untrained-or-barely-trained networks.
 
 ## 4. Methodology gate
 
@@ -201,9 +210,13 @@ Per checkpoint:
 - 435 Tier 1 pair scans: ~95 min
 - Total per checkpoint: ~120 min ≈ 2 h
 
-4 new checkpoints × 2 h = **~8 h on A100**, distributable across two
+5 new checkpoints × 2 h = **~10 h on A100**, distributable across two
 Colab Pro+ sessions. Final-checkpoint data already in repo
 (`data/analysis/tier1/`).
+
+Phase 4 (OLMo-2 1B replication, pre-reg v3) runs in parallel in a
+separate Colab session — independent compute path, no shared state
+between v2 and v3 runs.
 
 ## 7. Artifacts
 
