@@ -16,9 +16,10 @@ verdict tag `tier1_pass`):
   (Phase 2A, commit `c81d7f0`, FINAL CHECKPOINT)
 - Sign asymmetry REVERSED at final: 78 % compensatory at step 143000
 
-**Locked-on-commit:** see annotated tag `tier1_prereg_v2_locked`. The
-exact hash is recorded by the followup commit `lock: record v2/v3
-commit hash`.
+**Locked-on-commit:** `a833461` (annotated tag `tier1_prereg_v2_locked`).
+This file's substance was introduced at that commit; the only edit
+permitted afterwards is the insertion of this hash record. Hash also
+baked into `trajectory_verdict.json` produced downstream.
 
 ---
 

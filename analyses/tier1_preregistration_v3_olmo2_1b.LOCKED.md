@@ -12,9 +12,10 @@ Tag: `tier1_prereg_v3_locked`. Hash recorded in `tier1_olmo_verdict.json`.
 - Four findings to test for cross-architecture universality
 - Mean ablation, independent means, paired bootstrap n=1000
 
-**Locked-on-commit:** see annotated tag `tier1_prereg_v3_locked`. The
-exact hash is recorded by the followup commit `lock: record v2/v3
-commit hash`.
+**Locked-on-commit:** `a833461` (annotated tag `tier1_prereg_v3_locked`).
+This file's substance was introduced at that commit; the only edit
+permitted afterwards is the insertion of this hash record. Hash also
+baked into `tier1_olmo_verdict.json` produced downstream.
 
 ---
 
