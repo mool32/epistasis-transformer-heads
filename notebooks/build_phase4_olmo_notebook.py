@@ -93,9 +93,17 @@ os.makedirs(PHASE4_DIR, exist_ok=True)
 print(f'Outputs → {PHASE4_DIR}')"""))
 
 
-cells.append(md("""## 2. Install"""))
-cells.append(code(r"""!pip install -q transformers==4.45.2 datasets==3.0.1 pyarrow==16.1.0 \
-                    pyyaml==6.0.2 accelerate==0.34.2 huggingface_hub scipy 2>&1 | tail -3"""))
+cells.append(md("""## 2. Install — OLMo-2 needs `transformers >= 4.47`
+
+Pythia notebooks (Phase 1/2/3, Tier 1) are pinned to `transformers==4.45.2`
+for byte-identical reproducibility against Tier 1 baseline. OLMo-2's
+`olmo2` model class was added in `transformers 4.47`, so we bump only
+this Phase 4 environment. Cross-checkpoint comparison within OLMo is
+internally consistent (this notebook is one-shot)."""))
+cells.append(code(r"""!pip install -q 'transformers>=4.48,<5' datasets==3.0.1 pyarrow==16.1.0 \
+                    pyyaml==6.0.2 accelerate==0.34.2 huggingface_hub scipy 2>&1 | tail -3
+import transformers
+print(f'transformers {transformers.__version__}')"""))
 
 
 cells.append(md("""## 3. Imports + locked config"""))
