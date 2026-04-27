@@ -1,0 +1,177 @@
+{
+  "pre_registration_tag": "tier1_prereg_v3_locked",
+  "pre_reg_commit": "a833461",
+  "run_commit": "91fd954",
+  "model": "allenai/OLMo-2-0425-1B-early-training",
+  "revision": "stage1-step36000-tokens76B",
+  "checkpoint": 36000,
+  "arch_family": "llama_style",
+  "n_heads_total": 256,
+  "eval_hash": "fed5d0266f4a8695",
+  "top_k": 30,
+  "top_heads": [
+    [
+      6,
+      8
+    ],
+    [
+      9,
+      3
+    ],
+    [
+      12,
+      11
+    ],
+    [
+      1,
+      13
+    ],
+    [
+      0,
+      2
+    ],
+    [
+      6,
+      11
+    ],
+    [
+      12,
+      15
+    ],
+    [
+      13,
+      13
+    ],
+    [
+      4,
+      6
+    ],
+    [
+      11,
+      11
+    ],
+    [
+      11,
+      4
+    ],
+    [
+      11,
+      3
+    ],
+    [
+      6,
+      7
+    ],
+    [
+      0,
+      5
+    ],
+    [
+      8,
+      8
+    ],
+    [
+      5,
+      7
+    ],
+    [
+      10,
+      1
+    ],
+    [
+      2,
+      0
+    ],
+    [
+      8,
+      3
+    ],
+    [
+      7,
+      8
+    ],
+    [
+      2,
+      4
+    ],
+    [
+      12,
+      3
+    ],
+    [
+      9,
+      8
+    ],
+    [
+      9,
+      6
+    ],
+    [
+      14,
+      5
+    ],
+    [
+      13,
+      4
+    ],
+    [
+      11,
+      13
+    ],
+    [
+      11,
+      15
+    ],
+    [
+      13,
+      2
+    ],
+    [
+      14,
+      3
+    ]
+  ],
+  "F1_primary": {
+    "median_abs_eps_T1": 0.0005337633192539215,
+    "median_abs_eps_T2": 4.4364482164382935e-05,
+    "ratio": 12.03132084977748,
+    "permutation_p": 0.0,
+    "null_95_CI_top": 1.8194529401636448,
+    "gate": "CAUTION",
+    "verdict": "PASS"
+  },
+  "F2_same_layer": {
+    "n_same": 26,
+    "n_cross": 409,
+    "median_same": 0.0033942777663469315,
+    "median_cross": 0.0004880279302597046,
+    "mwu_p_one_sided": 2.1998983745809616e-07,
+    "pass": true
+  },
+  "F3_sign_asymmetry": {
+    "n_significant_z_gt_3": 369,
+    "frac_negative": 0.4281842818428184,
+    "outcome": "REPLICATES"
+  },
+  "F4_shape": {
+    "aic": {
+      "gaussian": 3718.074934497083,
+      "laplace": 3687.327955003212,
+      "student_t": 3678.1341778811648
+    },
+    "best": "student_t",
+    "delta_aic_vs_runner_up": 9.193777122047322,
+    "verdict": "PASS"
+  },
+  "KS_shape_T1_vs_T2": {
+    "D": 0.3331034482758621,
+    "p": 6.226615071598958e-05
+  },
+  "replication_flags": {
+    "F1": true,
+    "F2": true,
+    "F3": true,
+    "F4": true
+  },
+  "replication_count": 4
+}
