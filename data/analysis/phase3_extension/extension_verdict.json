@@ -1,0 +1,259 @@
+{
+  "pre_registration_tag": "tier1_prereg_v2_locked",
+  "pre_reg_commit": "a833461",
+  "run_commit": "9b01b77",
+  "extension_grid": [
+    1,
+    16,
+    128,
+    512
+  ],
+  "eval_hash": "c83487a9283cc1fc",
+  "top_heads_fixed": [
+    [
+      4,
+      6
+    ],
+    [
+      5,
+      2
+    ],
+    [
+      8,
+      9
+    ],
+    [
+      1,
+      10
+    ],
+    [
+      17,
+      1
+    ],
+    [
+      0,
+      9
+    ],
+    [
+      17,
+      4
+    ],
+    [
+      1,
+      6
+    ],
+    [
+      10,
+      11
+    ],
+    [
+      10,
+      8
+    ],
+    [
+      10,
+      1
+    ],
+    [
+      13,
+      14
+    ],
+    [
+      7,
+      2
+    ],
+    [
+      17,
+      13
+    ],
+    [
+      16,
+      15
+    ],
+    [
+      4,
+      9
+    ],
+    [
+      4,
+      8
+    ],
+    [
+      15,
+      10
+    ],
+    [
+      17,
+      11
+    ],
+    [
+      15,
+      13
+    ],
+    [
+      13,
+      6
+    ],
+    [
+      1,
+      11
+    ],
+    [
+      3,
+      0
+    ],
+    [
+      10,
+      10
+    ],
+    [
+      9,
+      8
+    ],
+    [
+      7,
+      0
+    ],
+    [
+      12,
+      2
+    ],
+    [
+      12,
+      11
+    ],
+    [
+      3,
+      7
+    ],
+    [
+      11,
+      10
+    ]
+  ],
+  "trajectory": {
+    "1": {
+      "median_abs_eps_T1": 5.781650543212891e-06,
+      "median_abs_eps_T2": 4.820525646209717e-06,
+      "n_T1": 435,
+      "n_T2": 50,
+      "frac_neg_z3": 0.4897959183673469,
+      "n_sig_z3": 147,
+      "median_same": 6.258487701416016e-07,
+      "median_cross": 6.07222318649292e-06,
+      "source": "extension",
+      "ratio": 1.1993817619783618
+    },
+    "16": {
+      "median_abs_eps_T1": 1.3262033462524414e-06,
+      "median_abs_eps_T2": 1.1846423149108887e-06,
+      "n_T1": 435,
+      "n_T2": 50,
+      "frac_neg_z3": 0.504,
+      "n_sig_z3": 125,
+      "median_same": 2.086162567138672e-07,
+      "median_cross": 1.4156103134155273e-06,
+      "source": "extension",
+      "ratio": 1.119496855345912
+    },
+    "128": {
+      "median_abs_eps_T1": 1.7285346984863281e-06,
+      "median_abs_eps_T2": 1.043081283569336e-06,
+      "n_T1": 435,
+      "n_T2": 50,
+      "frac_neg_z3": 0.5544554455445545,
+      "n_sig_z3": 101,
+      "median_same": 4.6193599700927734e-07,
+      "median_cross": 1.8030405044555664e-06,
+      "source": "extension",
+      "ratio": 1.6571428571428573
+    },
+    "512": {
+      "median_abs_eps_T1": 4.41819429397583e-06,
+      "median_abs_eps_T2": 2.376735210418701e-06,
+      "n_T1": 435,
+      "n_T2": 50,
+      "frac_neg_z3": 0.4316546762589928,
+      "n_sig_z3": 278,
+      "median_same": 8.024275302886963e-06,
+      "median_cross": 4.414469003677368e-06,
+      "source": "extension",
+      "ratio": 1.858934169278997
+    },
+    "1000": {
+      "median_abs_eps_T1": 1.9513070583343506e-05,
+      "median_abs_eps_T2": 3.7960708141326904e-06,
+      "n_T1": 435,
+      "n_T2": 50,
+      "frac_neg_z3": 0.3968253968253968,
+      "n_sig_z3": 315,
+      "median_same": 3.744661808013916e-05,
+      "median_cross": 1.911446452140808e-05,
+      "source": "main",
+      "ratio": 5.140333660451423
+    },
+    "2000": {
+      "median_abs_eps_T1": 5.2716583013534546e-05,
+      "median_abs_eps_T2": 6.766989827156067e-06,
+      "n_T1": 435,
+      "n_T2": 50,
+      "frac_neg_z3": 0.4247787610619469,
+      "n_sig_z3": 339,
+      "median_same": 0.00011068582534790039,
+      "median_cross": 5.229748785495758e-05,
+      "source": "main",
+      "ratio": 7.790255986787779
+    },
+    "4000": {
+      "median_abs_eps_T1": 0.00016359984874725342,
+      "median_abs_eps_T2": 1.051090657711029e-05,
+      "n_T1": 435,
+      "n_T2": 50,
+      "frac_neg_z3": 0.3767313019390582,
+      "n_sig_z3": 361,
+      "median_same": 0.0003612712025642395,
+      "median_cross": 0.00015328824520111084,
+      "source": "main",
+      "ratio": 15.564770512138933
+    },
+    "8000": {
+      "median_abs_eps_T1": 0.0003838539123535156,
+      "median_abs_eps_T2": 1.2828037142753601e-05,
+      "n_T1": 435,
+      "n_T2": 50,
+      "frac_neg_z3": 0.3048128342245989,
+      "n_sig_z3": 374,
+      "median_same": 0.0015298686921596527,
+      "median_cross": 0.0003395751118659973,
+      "source": "main",
+      "ratio": 29.923043415129953
+    },
+    "16000": {
+      "median_abs_eps_T1": 0.0004465542733669281,
+      "median_abs_eps_T2": 2.0369887351989746e-05,
+      "n_T1": 435,
+      "n_T2": 50,
+      "frac_neg_z3": 0.300531914893617,
+      "n_sig_z3": 376,
+      "median_same": 0.0025907568633556366,
+      "median_cross": 0.00043720006942749023,
+      "source": "main",
+      "ratio": 21.922275054864667
+    },
+    "143000": {
+      "median_abs_eps_T1": 0.0010313056409358978,
+      "median_abs_eps_T2": 2.8751790523529053e-05,
+      "n_T1": 435,
+      "n_T2": 50,
+      "frac_neg_z3": 0.21558441558441557,
+      "n_sig_z3": 385,
+      "median_same": 0.004516184329986572,
+      "median_cross": 0.0009961426258087158,
+      "source": "tier1_final",
+      "ratio": 35.86926664939104
+    }
+  },
+  "transition_step_localized": 1000,
+  "extension_tier_verdict": "PASS_PRE_REG_BAND",
+  "interpretation": "Functional epistasis emerges in the (512, 2000] window, co-temporal with DFE crystallization (Paper 2). Main pre-reg verdict stands."
+}
