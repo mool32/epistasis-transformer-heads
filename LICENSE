@@ -1,0 +1,56 @@
+MIT License (code) + CC-BY 4.0 (data, figures, manuscript)
+
+Copyright (c) 2026 Theodor Spiro / Vaika Inc.
+
+===============================================================================
+CODE (everything in scripts/ and utils.py): MIT License
+===============================================================================
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+===============================================================================
+DATA (data/*.csv), FIGURES (figures/*.png), MANUSCRIPT (paper/*):
+  Creative Commons Attribution 4.0 International (CC-BY 4.0)
+===============================================================================
+
+You are free to:
+ - Share: copy and redistribute the material in any medium or format
+ - Adapt: remix, transform, and build upon the material for any purpose,
+   even commercially
+
+Under the following terms:
+ - Attribution: You must give appropriate credit, provide a link to the
+   license, and indicate if changes were made.
+
+Full license text: https://creativecommons.org/licenses/by/4.0/
+
+===============================================================================
+UPSTREAM DATA NOTICE
+===============================================================================
+
+Derived intermediate data in data/*.csv originates from:
+ - Tabula Muris Senis (Schaum et al. 2020; figshare 12654728) — CC-BY 4.0
+ - Kimmel et al. 2019 (Genome Research; GEO GSE132901) — paper terms
+ - Calico rat aging atlas (Zou et al. 2022, GEO GSE141784) — paper terms
+ - Pythia-410M (EleutherAI, HuggingFace) — Apache 2.0
+
+Derived data is shared under CC-BY 4.0 with upstream attribution required.
+Do not redistribute raw h5ad files from those sources in this repository;
+always obtain them from the official upstream location and cite
+accordingly.
