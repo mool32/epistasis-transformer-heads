@@ -9,8 +9,10 @@ data/single_scans/*.parquet
 data/single_scans/*.npz
 data/pair_scans/*.parquet
 data/pair_scans/*.npz
-figures/*.png
-figures/*.pdf
+# Paper figures ARE tracked (small, reviewer-relevant, frozen with paper draft).
+# Ad-hoc / scratch plots can be moved to scratch/ if needed later.
+# figures/*.png
+# figures/*.pdf
 
 # But keep directory shape
 !data/eval_sample/.gitkeep
