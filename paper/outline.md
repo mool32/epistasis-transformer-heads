@@ -17,26 +17,49 @@ methodological_findings.md §1 and applied to all narrative.
 
 ---
 
-## Abstract (target ~200 words)
+## Abstract (target ~280 words, draft v2 — centered on double phase transition)
 
-Population genetics tools applied to neural networks reveal universal
-statistical signatures. Building on Paper 2 (single-ablation DFE,
-heavy-tailed Student-t, crystallization at ~1% training), we measure
-the **second-order signature**: pairwise epistasis among attention
-heads. Mean-ablation epistasis on Pythia 410M (final checkpoint) shows
-top-30 functional heads have median |ε| 35× the architectural
-baseline (random pair epistasis from residual-stream + LayerNorm
-non-linearity). 78% of significant pairs have ε > 0 in loss space —
-synthetic-lethal/redundancy regime, matching Costanzo 2010 yeast
-prior. Cross-architecture replication on OLMo-2 1B Llama-style
-delivers 4/4 finding replication (ratio 12, frac_synth 57%, Student-t
-shape, same-layer 7× enrichment). Multi-checkpoint trajectory localizes
-the epistasis transition to (512, 1000] training steps — co-temporal
-with Paper 2 DFE crystallization, **rejecting lottery-ticket emergence**
-(ratio = 1.2 at random init). Two independent population-genetics
-instruments — DFE shape and pairwise epistasis — reveal the same
-phase-transition-like differentiation event in the same training
-window. Statistical structure of differentiation appears
+Trained transformers undergo a phase-transition-like differentiation
+event in the first 1% of training. Two independent population-genetics
+instruments — single-ablation distribution of fitness effects (DFE)
+and pairwise epistasis among attention heads — witness this transition
+within the **same measured training step (step 1000, 0.7% of training)**
+in Pythia 410M. The DFE shape parameter β crosses 1.0 (boundary of the
+biological range reported for *E. coli* and yeast) between step 512
+(β = 1.78) and step 1000 (β = 0.77). Epistasis ratio between top-30
+functional pairs and a random-pair architectural baseline crosses 5
+(pre-registered threshold) in the same window (1.86 → 5.14). Both
+post-transition regimes are stable through step 143000 (β bounded
+[0.62, 0.93], ratio growing monotonically to 35.87). At training
+step 1, neither signature is present (β light-tailed, ratio = 1.20),
+**rejecting lottery-ticket emergence for both instruments**.
+
+The epistasis regime that emerges is biologically informative: 78%
+of significant top-30 pairs in Pythia and 57% in OLMo-2 1B Llama-style
+show ε > 0 in loss space — synthetic-lethal/redundancy direction
+matching Costanzo 2010 yeast genetic-interaction signatures (60-70%
+synthetic-sick/lethal). Heavy-tailed Student-t shape, 4-7× same-layer
+enrichment (operon analog), and 4/4 cross-architecture replication on
+OLMo. A complementary measurement on Norman 2019 K562 Perturb-seq
+(direct CRISPRi intervention rather than ablation) reproduces the
+direction in calibration: top-3 pairs by |z| all show ε > 0 (CBL/CNN1
+z = +11.27, CBL/UBASH3B z = +12.83).
+
+Together: one underlying differentiation event, two independent
+instruments, four substrates (two transformer architectures + yeast
+literature + human Perturb-seq) — all consistent with synthetic-
+lethal/redundancy regime emerging in the same training-fraction window.
+The statistical structure of differentiation appears substrate-
+independent; landscape topology, not search mechanism, determines
+distributional form.
+
+## Centerpiece figure: `figures/double_phase_transition.png`
+
+Dual-axis time-series with DFE β (Paper 2, blue, inverted axis) and
+epistasis ratio (this work, red, log axis) on shared log-time x-axis.
+Phase-transition window (512, 1000] highlighted; both threshold
+crossings annotated. This is **Figure 1** of the paper — front-loaded
+to establish the central claim before any methods discussion. Statistical structure of differentiation appears
 substrate-independent: same regime emerges in ablation of trained
 transformers as in genetic interaction maps of yeast.
 
