@@ -1,0 +1,20 @@
+{
+  "pythia_410m_tier1": {
+    "n_total": 435,
+    "n_significant": 385,
+    "aggregate_frac_neg": 0.21558441558441557,
+    "same_layer": {
+      "n_total": 23,
+      "n_sig": 21,
+      "frac_neg_sig": 0.42857142857142855,
+      "median_eps_sig": 0.0006185024976730347
+    },
+    "cross_layer": {
+      "n_total": 412,
+      "n_sig": 364,
+      "frac_neg_sig": 0.2032967032967033,
+      "median_eps_sig": 0.000991789624094963
+    },
+    "verdict": "OUTCOME_2: ML diverges \u2014 both subsets \u03b5>0 dominant (synthetic-lethal-only)"
+  }
+}
