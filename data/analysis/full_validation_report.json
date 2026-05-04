@@ -1,0 +1,111 @@
+{
+  "validation_1_fisher_pythia": {
+    "contingency": {
+      "sl_neg": 9,
+      "sl_pos": 12,
+      "cl_neg": 74,
+      "cl_pos": 290
+    },
+    "fisher_p": 0.020018189379010835,
+    "odds_ratio": 2.939189189189189,
+    "bootstrap_ci_diff": [
+      0.014606227106227124,
+      0.434981684981685
+    ],
+    "verdict": "PASS moderate"
+  },
+  "validation_2_5_trajectory": [
+    {
+      "step": 1000,
+      "sl_n": 16,
+      "cl_n": 299,
+      "sl_frac_neg": 0.3125,
+      "cl_frac_neg": 0.4013377926421405,
+      "gap": -0.08883779264214048,
+      "p_fisher": 0.8335160705388376
+    },
+    {
+      "step": 2000,
+      "sl_n": 18,
+      "cl_n": 321,
+      "sl_frac_neg": 0.5,
+      "cl_frac_neg": 0.4205607476635514,
+      "gap": 0.07943925233644861,
+      "p_fisher": 0.3349803155344105
+    },
+    {
+      "step": 4000,
+      "sl_n": 21,
+      "cl_n": 340,
+      "sl_frac_neg": 0.47619047619047616,
+      "cl_frac_neg": 0.37058823529411766,
+      "gap": 0.1056022408963585,
+      "p_fisher": 0.22846306782099585
+    },
+    {
+      "step": 8000,
+      "sl_n": 22,
+      "cl_n": 352,
+      "sl_frac_neg": 0.45454545454545453,
+      "cl_frac_neg": 0.29545454545454547,
+      "gap": 0.15909090909090906,
+      "p_fisher": 0.09367089837685237
+    },
+    {
+      "step": 16000,
+      "sl_n": 21,
+      "cl_n": 355,
+      "sl_frac_neg": 0.47619047619047616,
+      "cl_frac_neg": 0.29014084507042254,
+      "gap": 0.18604963112005363,
+      "p_fisher": 0.06272141922122251
+    },
+    {
+      "step": 143000,
+      "sl_n": 21,
+      "cl_n": 364,
+      "sl_frac_neg": 0.42857142857142855,
+      "cl_frac_neg": 0.2032967032967033,
+      "gap": 0.22527472527472525,
+      "p_fisher": 0.020018189379010835
+    }
+  ],
+  "validation_4_norman_pathway_annotation": {
+    "annotation_counts": {
+      "same": 5,
+      "cross": 2,
+      "uncertain": 1,
+      "unannotated": 22
+    },
+    "by_pathway_summary": [
+      {
+        "pathway": "same",
+        "n": 5,
+        "n_neg": 4,
+        "frac_neg": 0.8,
+        "median_eps": -1.2510170936584473
+      },
+      {
+        "pathway": "cross",
+        "n": 2,
+        "n_neg": 1,
+        "frac_neg": 0.5,
+        "median_eps": -0.21275806427001953
+      },
+      {
+        "pathway": "uncertain",
+        "n": 1,
+        "n_neg": 1,
+        "frac_neg": 1.0,
+        "median_eps": -2.2185566425323486
+      },
+      {
+        "pathway": "unannotated",
+        "n": 22,
+        "n_neg": 17,
+        "frac_neg": 0.7727272727272727,
+        "median_eps": -1.0965220928192139
+      }
+    ]
+  }
+}
